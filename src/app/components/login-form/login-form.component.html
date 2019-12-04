@@ -1,0 +1,65 @@
+<div class="auth-page">
+  <div class="container page">
+    <div class="row">
+      <div class="col-md-6 offset-md-3 col-xs-12">
+        <h1 class="text-xs-center">{{ titleForm }}</h1>
+        <p class="text-xs-center">
+          <a [routerLink]="['/', 'login']" *ngIf="!loginForm">Have an account?</a>
+          <a [routerLink]="['/', 'register']" *ngIf="loginForm">Need an account?</a>
+        </p>
+
+        <ul class="error-messages" *ngIf="(loginFormGroup.dirty && loginFormGroup.invalid) || (loginErr != undefined)">
+          <li *ngIf="
+                loginFormGroup.controls['userName']?.errors?.required &&
+                (loginFormGroup.controls['userName'].dirty || loginFormGroup.controls['userName'].touched)
+              ">
+            Your name can't be blank
+          </li>
+          <li *ngIf="
+                loginFormGroup.controls['email']?.errors?.required &&
+                (loginFormGroup.controls['email'].dirty || loginFormGroup.controls['email'].touched)
+              ">
+            Email can't be blank
+          </li>
+          <li *ngIf="
+                loginFormGroup.controls['email']?.errors?.pattern &&
+                (loginFormGroup.controls['email'].dirty || loginFormGroup.controls['email'].touched)
+              ">
+            Email is not type
+          </li>
+          <li *ngIf="
+                loginFormGroup.controls['password']?.errors?.required &&
+                (loginFormGroup.controls['password'].dirty || loginFormGroup.controls['password'].touched)
+              ">
+            Password can't be blank
+          </li>
+          <ng-container *ngIf="loginErr != undefined">
+            <li *ngFor="let item of loginErr | keyvalue">
+              {{item['key']}} {{item['value']}}
+            </li>
+          </ng-container>
+        </ul>
+
+        <form [formGroup]="loginFormGroup" novalidate>
+          <fieldset class="form-group" *ngIf="!loginForm">
+            <input class="form-control form-control-lg" type="text" placeholder="Your Name"
+              formControlName="userName" />
+          </fieldset>
+          <fieldset class="form-group">
+            <input class="form-control form-control-lg" type="text" placeholder="Email" formControlName="email" />
+          </fieldset>
+          <fieldset class="form-group">
+            <input class="form-control form-control-lg" type="password" placeholder="Password"
+              formControlName="password" />
+          </fieldset>
+          <button class="btn btn-lg btn-primary pull-xs-right" type="button" *ngIf="!loginForm" (click)="register()" [disabled]="loginFormGroup.invalid">
+            Sign up
+          </button>
+          <button class="btn btn-lg btn-primary pull-xs-right" type="button" *ngIf="loginForm" (click)="login()" [disabled]="loginFormGroup.controls['email'].invalid || loginFormGroup.controls['password'].invalid">
+            Sign in
+          </button>          
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

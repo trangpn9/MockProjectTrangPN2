@@ -1,0 +1,63 @@
+<div class="profile-page">
+
+    <div class="user-info">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-xs-12 col-md-10 offset-md-1">
+                    <img [src]="profileUser.image" [title]="profileUser.username" class="user-img" />
+                    <h4>{{profileUser.username}}</h4>
+                    <p>{{profileUser.bio}}</p>
+                    <button class="btn btn-sm btn-outline-secondary action-btn" *ngIf="!myProfile">
+                        <i class="ion-plus-round"></i>
+                        &nbsp;
+                        Follow {{profileUser.username}}
+                    </button>
+                    <a class="btn btn-sm btn-outline-secondary action-btn" routerLink="/settings" *ngIf="myProfile">
+                        <i class="ion-gear-a"></i> Edit Profile Settings
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-xs-12 col-md-10 offset-md-1">
+                <div class="articles-toggle">
+                    <ul class="nav nav-pills outline-active">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="">My Articles</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="">Favorited Articles</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="article-preview" *ngFor="let item of articles">
+                    <div class="article-meta">
+                        <a href=""><img [src]="item.author.image" /></a>
+                        <div class="info">
+                            <a href="" class="author">{{item.author.username}}</a>
+                            <span class="date">{{item.updatedAt | date:'MMMM dd,yyyy'}}</span>
+                        </div>
+                        <button class="btn btn-outline-primary btn-sm pull-xs-right">
+                            <i class="ion-heart"></i> 29
+                        </button>
+                    </div>
+                    <a href="" class="preview-link">
+                        <h1>{{item.title}}</h1>
+                        <p>{{item.description}}</p>
+                        <span>Read more...</span>
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>

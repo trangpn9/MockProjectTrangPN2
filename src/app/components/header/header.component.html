@@ -1,0 +1,39 @@
+<nav class="navbar navbar-light">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/">conduit</a>
+    <ul class="nav navbar-nav pull-xs-right">
+      <li class="nav-item">
+        <!-- Add "active" class when you're on that page" -->
+        <a class="nav-link" routerLink="/" routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      </li>
+      <ng-container *ngIf="isLogin">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/editor" routerLinkActive="active">
+              <i class="ion-compose"></i>&nbsp;New Post
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/settings" routerLinkActive="active">
+              <i class="ion-gear-a"></i>&nbsp;Settings
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/', 'profile', '@'+currentUser]" routerLinkActive="active">
+              <img *ngIf="currentImage != ''" class="user-pic" [src]="currentImage"/>
+              {{currentUser}}
+            </a>
+          </li>          
+      </ng-container>
+      
+      <ng-container *ngIf="!isLogin">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/login" routerLinkActive="active">Sign in</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/register" routerLinkActive="active">Sign up</a>
+        </li>
+      </ng-container>    
+    </ul>
+  </div>
+</nav>

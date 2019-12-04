@@ -1,0 +1,40 @@
+<div class="row">
+
+    <div class="col-md-9">
+        <div class="feed-toggle">
+            <ul class="nav nav-pills outline-active">
+                <li class="nav-item" *ngIf="isLogin">
+                    <a class="nav-link" href="">Your Feed</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="">Global Feed</a>
+                </li>
+            </ul>
+        </div>
+
+        <ng-container *ngFor="let article of articles">
+            <app-article-preview [article]="article"></app-article-preview>
+        </ng-container>
+
+        <div class="ng-isolate-scope">
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item ng-scope" *ngFor="let item of numbers">
+                        <a class="page-link ng-binding" href="">{{item + 1}}</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>        
+    </div>
+
+    <div class="col-md-3">
+        <div class="sidebar">
+            <p>Popular Tags</p>
+
+            <div class="tag-list">
+                <a href (click)="selectTag($event, tag)" class="tag-pill tag-default" *ngFor="let tag of tags">{{tag}}</a>
+            </div>
+        </div>
+    </div>
+
+</div>

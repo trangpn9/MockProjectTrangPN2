@@ -1,0 +1,7 @@
+.tag-pill.tag-default.active{
+    background-color: #474a4d;
+    text-decoration: underline;
+}
+.tag-pill.tag-default.active:hover{    
+    text-decoration: none;
+}
