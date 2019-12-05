@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ArticleService, Article, Articles } from '../article.service';
+import { ScrollAutoService } from 'src/app/services/scroll-auto.service';
 
 @Component({
   selector: 'app-list-article',
@@ -14,18 +15,14 @@ export class ListArticleComponent implements OnInit {
   tags: string[] = [];
   totalPage: number = 0;
   numbers: number[] = [];
+  currentTag: string = '';
+  currPage: number = 0;
+  feedToggle: string = 'globalFeed';
 
   constructor(private articleService: ArticleService) { }
 
-  ngOnInit() {
-    this.articleService.getAllArticles().subscribe((data: Articles) => {
-      const { articles, articlesCount } = data;
-      this.articles = articles;      
-      this.totalArticles = articlesCount;
-      
-      this.totalPage = Math.ceil(articlesCount / articles.length);          
-      this.numbers = Array(this.totalPage).fill(0).map((x,i)=>i);
-    });
+  ngOnInit() {   
+    this.getGlobalArticle();
 
     this.articleService.getAllTags().subscribe((data: any) => {
       const { tags } = data;
@@ -35,14 +32,55 @@ export class ListArticleComponent implements OnInit {
 
   selectTag(event, tag) {
     event.preventDefault();
-    console.log(tag);
+    this.currPage = 0;
+
+    this.currentTag = tag;
+    this.feedToggle = 'tag';
+
     this.articleService.getArticlesByTag(tag).subscribe((data: Articles) => {
-      const { articles, articlesCount } = data;
-      this.articles = articles;      
-      this.totalArticles = articlesCount;
-      
-      this.totalPage = Math.ceil(articlesCount / articles.length);          
-      this.numbers = Array(this.totalPage).fill(0).map((x,i)=>i);
+      this.handlePagination(data);
+    });    
+  }
+
+  onClickFeed(event, feed) {
+    event.preventDefault();
+    this.currPage = 0;
+    this.feedToggle = feed    
+  
+    if (feed === 'globalFeed') {
+      this.currentTag = '';
+      this.getGlobalArticle();
+    }    
+  }
+
+  handlePagination(data: Articles) {
+    const { articles, articlesCount } = data;
+    this.articles = articles;
+    this.totalArticles = articlesCount;
+
+    this.totalPage = Math.ceil(articlesCount / articles.length);
+    this.numbers = Array(this.totalPage).fill(0).map((x, i) => i);
+  }
+
+  getGlobalArticle() {
+    this.articleService.getAllArticles().subscribe((data: Articles) => {
+      this.handlePagination(data);
+    });
+  }
+
+  changePage(event, number) {
+    event.preventDefault();    
+    this.currPage = number;
+
+    this.articleService.getArticlesByOffset(number).subscribe((data: Articles) => {
+      const { articles } = data;
+      this.articles = articles;
+    });
+
+    return window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
     });
   }
 

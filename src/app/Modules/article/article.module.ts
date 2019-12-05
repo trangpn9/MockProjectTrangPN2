@@ -6,7 +6,7 @@ import { ArticlePreviewComponent } from './article-preview/article-preview.compo
 
 @NgModule({
   declarations: [
-    ListArticleComponent, 
+    ListArticleComponent,
     ArticlePreviewComponent
   ],
   imports: [
@@ -14,8 +14,9 @@ import { ArticlePreviewComponent } from './article-preview/article-preview.compo
     RouterModule,
   ],
   exports: [
-    ListArticleComponent,
     RouterModule,
+    ListArticleComponent,    
+    ArticlePreviewComponent,
   ]
 })
 export class ArticleModule { }

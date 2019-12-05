@@ -11,31 +11,41 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AuthGuard } from './services/guard/auth.guard';
 import { ArticleModule } from './Modules/article/article.module';
+import { FavoritesComponent } from './components/favorites/favorites.component';
+import { MyArticlesComponent } from './components/my-articles/my-articles.component';
 
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },  
+  { path: '', component: HomeComponent },
   { path: 'login', component: LoginFormComponent },
   { path: 'register', component: LoginFormComponent },
   { path: 'editor', component: EditorComponent, canActivate: [AuthGuard] },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
-  
-  { path: 'profile/:username', component: ProfileComponent },
+
+  {
+    path: 'profile', component: ProfileComponent, children: [
+      { path: '', redirectTo: '/', pathMatch: 'full' },
+      { path: ':username', component: MyArticlesComponent },
+      { path: ':username/favorites', component: FavoritesComponent },
+    ]
+  },
   { path: '**', component: PageNotFoundComponent }
 ];
 
 
 @NgModule({
-  declarations: [    
+  declarations: [
     HomeComponent,
     PageNotFoundComponent,
     LoginFormComponent,
     EditorComponent,
     SettingsComponent,
-    ProfileComponent
+    ProfileComponent,
+    FavoritesComponent,
+    MyArticlesComponent,   
   ],
   imports: [
-    CommonModule,    
+    CommonModule,
     ReactiveFormsModule,
     FormsModule,
     RouterModule.forRoot(routes),

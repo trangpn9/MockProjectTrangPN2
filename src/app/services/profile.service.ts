@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LoginService } from './login.service';
 import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject } from 'rxjs';
 
 export interface PorfileUser {
   username: string;
@@ -15,14 +16,20 @@ export interface PorfileUser {
 export class ProfileService {
 
   private _API: string = '';
+  private _currentProfile = new BehaviorSubject<PorfileUser>({    
+    username: '',
+    bio: '',
+    image: '',
+    following: false,
+  });
 
   constructor(private _loginService: LoginService, private http: HttpClient) {
     this._API = this._loginService.getAPI();
   }
 
-  getCurrentProfile(username: string) {
-    username = username.replace('@', '');
+  getCurrentProfile(username: string) {    
+    let name = username.slice(1);
 
-    return this.http.get(`${this._API}profiles/${username}`);
+    return this.http.get(`${this._API}profiles/${name}`);
   }
 }

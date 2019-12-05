@@ -33,6 +33,8 @@ export interface Articles {
 export class ArticleService {
 
   private _API: string = '';
+  private _cacheRequest: string = '';
+  private _offset: number = 10;
 
   constructor(private _loginService: LoginService, private http: HttpClient) {
     this._API = this._loginService.getAPI();
@@ -43,10 +45,42 @@ export class ArticleService {
   }
 
   getAllArticles() {
+    this._cacheRequest = `${this._API}articles?limit=10`;
+    this._offset = 10;
+
     return this.http.get(`${this._API}articles?limit=10`);
   }
 
   getArticlesByTag(tag) {   
+    this._cacheRequest = `${this._API}articles?limit=10&tag=${tag}`;
+    this._offset = 10;
+
     return this.http.get(`${this._API}articles?limit=10&tag=${tag}`);
+  }
+
+  getArticlesByOffset(page) {
+    let num = parseInt(page, 10) * this._offset;
+
+    return this.http.get(`${this._cacheRequest}&offset=${num}`);
+  }
+
+  getCacheRequest() {
+    return this._cacheRequest;
+  }
+
+  getListArticleByUsername(username: string) {
+    username = username.slice(1);
+    this._offset = 5;
+    this._cacheRequest = `${this._API}articles?author=${username}&limit=5`;
+
+    return this.http.get(`${this._API}articles?author=${username}&limit=5`);
+  }
+
+  getFavoritesArticleByUsername(username: string) {
+    username = username.slice(1);
+    this._offset = 5;
+    this._cacheRequest = `${this._API}articles?favorited=${username}&limit=5`;
+
+    return this.http.get(`${this._API}articles?favorited=${username}&limit=5`);
   }
 }
