@@ -83,4 +83,15 @@ export class ArticleService {
 
     return this.http.get(`${this._API}articles?favorited=${username}&limit=5`);
   }
+
+  getArticleBySlug(slug) {
+    // https://conduit.productionready.io/api/articles/whatt-tata-2futbna
+    this._cacheRequest = `${this._API}articles/${slug}`;
+
+    return this.http.get(`${this._API}articles/${slug}`);
+  }  
+
+  getArticleCommentBySlug() {
+    return this.http.get(`${this._cacheRequest}/comments`);
+  }
 }

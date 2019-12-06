@@ -3,7 +3,7 @@ import { LoginService } from './login.service';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 
-export interface PorfileUser {
+export interface ProfileUser {
   username: string;
   bio: string;
   image: string;
@@ -16,7 +16,7 @@ export interface PorfileUser {
 export class ProfileService {
 
   private _API: string = '';
-  private _currentProfile = new BehaviorSubject<PorfileUser>({    
+  private _currentProfile = new BehaviorSubject<ProfileUser>({    
     username: '',
     bio: '',
     image: '',
@@ -27,9 +27,17 @@ export class ProfileService {
     this._API = this._loginService.getAPI();
   }
 
-  getCurrentProfile(username: string) {    
+  setCurrentProfile(username: string) {            
     let name = username.slice(1);
 
-    return this.http.get(`${this._API}profiles/${name}`);
+    this.http.get(`${this._API}profiles/${name}`).subscribe((data: any) => {                      
+      this._currentProfile.next(data.profile);      
+    });
+    
   }
+
+  getCurrentProfile() {
+    return this._currentProfile;
+  }
+
 }

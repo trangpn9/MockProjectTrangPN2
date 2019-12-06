@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ProfileService, PorfileUser } from 'src/app/services/profile.service';
+import { ProfileService, ProfileUser } from 'src/app/services/profile.service';
 import { LoginService, User } from 'src/app/services/login.service';
 import { Title, Meta } from '@angular/platform-browser';
 
@@ -11,18 +11,13 @@ import { Title, Meta } from '@angular/platform-browser';
 })
 export class ProfileComponent implements OnInit {
 
-  profileUser: PorfileUser = {
-    username: '',
-    bio: '',
-    image: '',
-    following: false,
-  };
+  profileUser: ProfileUser;
   isFollow: boolean = false;
   myProfile: boolean = false;
   currListArticle: string = 'myArticle';
 
   constructor(
-    private _profileService: ProfileService,        
+    private _profileService: ProfileService,
     private activatedRoute: ActivatedRoute,
     private _loginService: LoginService,
     private title: Title, private meta: Meta
@@ -30,20 +25,19 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     let userLogin: string = '';
-    let currentUser: string = '';          
+    let currentUser: string = '';
 
-    currentUser = this.activatedRoute.firstChild.snapshot.params['username'];    
+    currentUser = this.activatedRoute.firstChild.snapshot.params['username'];
 
     this._loginService.getCurrentUser().subscribe((data: User) => {
       userLogin = data.username;
     });
+    this._profileService.setCurrentProfile(currentUser);
 
-    this._profileService.getCurrentProfile(currentUser).subscribe((data: any) => {
-      // console.log('Data', data);
-      
+    this._profileService.getCurrentProfile().subscribe((data: ProfileUser) => {
+      this.profileUser = data;      
       this.currListArticle = 'myArticle';
-
-      this.profileUser = data.profile;
+      
       this.title.setTitle(`@${this.profileUser.username} | Conduit`);
       this.meta.updateTag({
         name: 'description',
@@ -55,6 +49,7 @@ export class ProfileComponent implements OnInit {
       } else {
         this.myProfile = false;
       }
+      
     });
   }
 

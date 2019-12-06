@@ -13,7 +13,7 @@ import { AuthGuard } from './services/guard/auth.guard';
 import { ArticleModule } from './Modules/article/article.module';
 import { FavoritesComponent } from './components/favorites/favorites.component';
 import { MyArticlesComponent } from './components/my-articles/my-articles.component';
-
+import { ArticleDetailComponent } from './Modules/article/article-detail/article-detail.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -21,7 +21,6 @@ const routes: Routes = [
   { path: 'register', component: LoginFormComponent },
   { path: 'editor', component: EditorComponent, canActivate: [AuthGuard] },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
-
   {
     path: 'profile', component: ProfileComponent, children: [
       { path: '', redirectTo: '/', pathMatch: 'full' },
@@ -29,6 +28,10 @@ const routes: Routes = [
       { path: ':username/favorites', component: FavoritesComponent },
     ]
   },
+  { path: 'article', children: [
+    { path: '', redirectTo:'/', pathMatch: 'full' },
+    { path: ':slug', component: ArticleDetailComponent },
+  ]},
   { path: '**', component: PageNotFoundComponent }
 ];
 
