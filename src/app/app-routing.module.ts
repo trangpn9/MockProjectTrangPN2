@@ -14,6 +14,7 @@ import { ArticleModule } from './Modules/article/article.module';
 import { FavoritesComponent } from './components/favorites/favorites.component';
 import { MyArticlesComponent } from './components/my-articles/my-articles.component';
 import { ArticleDetailComponent } from './Modules/article/article-detail/article-detail.component';
+import { HttpClientModule } from '@angular/common/http';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -45,17 +46,18 @@ const routes: Routes = [
     SettingsComponent,
     ProfileComponent,
     FavoritesComponent,
-    MyArticlesComponent,   
+    MyArticlesComponent,
   ],
   imports: [
     CommonModule,
+    HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-    RouterModule.forRoot(routes),
-    ArticleModule
+    RouterModule.forRoot(routes),    
+    ArticleModule,    
   ],
   exports: [
-    RouterModule
+    RouterModule,    
   ]
 })
 

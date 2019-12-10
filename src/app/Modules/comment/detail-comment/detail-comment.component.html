@@ -1,0 +1,16 @@
+<div class="card" [id]="comment.id">
+    <div class="card-block">
+        <p class="card-text">{{comment.body}}</p>
+    </div>
+    <div class="card-footer">
+        <a [routerLink]="['/', 'profile', '@'+comment.author.username]" class="comment-author">
+            <img [src]="comment.author.image" class="comment-author-img" />
+        </a>
+        &nbsp;
+        <a [routerLink]="['/', 'profile', '@'+comment.author.username]" class="comment-author">{{comment.author.username}}</a>
+        <span class="date-posted">{{comment.updatedAt | date:'MMMM dd, yyyy'}}</span>
+        <span class="mod-options" *ngIf="isLogin"  (click)="deleteComment()">            
+            <i class="ion-trash-a"></i>
+        </span>
+    </div>
+</div>

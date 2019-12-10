@@ -8,11 +8,7 @@
                     <img [src]="profileUser.image" [title]="profileUser.username" class="user-img" />
                     <h4>{{profileUser.username}}</h4>
                     <p>{{profileUser.bio}}</p>
-                    <button class="btn btn-sm btn-outline-secondary action-btn" *ngIf="!myProfile">
-                        <i class="ion-plus-round"></i>
-                        &nbsp;
-                        Follow {{profileUser.username}}
-                    </button>
+                    <app-follow-user *ngIf="!myProfile" [username]="username" [following]="following"></app-follow-user>
                     <a class="btn btn-sm btn-outline-secondary action-btn" routerLink="/settings" *ngIf="myProfile">
                         <i class="ion-gear-a"></i> Edit Profile Settings
                     </a>

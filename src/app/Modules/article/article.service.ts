@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LoginService } from 'src/app/services/login.service';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 export interface Author {
   username: string;
@@ -34,7 +34,7 @@ export class ArticleService {
 
   private _API: string = '';
   private _cacheRequest: string = '';
-  private _offset: number = 10;
+  private _offset: number = 10;  
 
   constructor(private _loginService: LoginService, private http: HttpClient) {
     this._API = this._loginService.getAPI();
@@ -45,13 +45,19 @@ export class ArticleService {
   }
 
   getAllArticles() {
+    let isLogin = this._loginService.checkLogin().value;
     this._cacheRequest = `${this._API}articles?limit=10`;
     this._offset = 10;
+
+    if (isLogin) {
+      let headers = this._loginService.setTokenRequest();
+      return this.http.get(`${this._API}articles?limit=10`, headers);
+    }    
 
     return this.http.get(`${this._API}articles?limit=10`);
   }
 
-  getArticlesByTag(tag) {   
+  getArticlesByTag(tag) {
     this._cacheRequest = `${this._API}articles?limit=10&tag=${tag}`;
     this._offset = 10;
 
@@ -85,13 +91,31 @@ export class ArticleService {
   }
 
   getArticleBySlug(slug) {
-    // https://conduit.productionready.io/api/articles/whatt-tata-2futbna
+    let isLogin = this._loginService.checkLogin().value;    
     this._cacheRequest = `${this._API}articles/${slug}`;
+    if (isLogin) {
+      let headers = this._loginService.setTokenRequest();
+      return this.http.get(`${this._API}articles/${slug}`, headers);  
+    }
 
     return this.http.get(`${this._API}articles/${slug}`);
-  }  
+  }
 
   getArticleCommentBySlug() {
     return this.http.get(`${this._cacheRequest}/comments`);
+  }
+
+  favoriteBySlug(slug) {            
+    let headers = this._loginService.setTokenRequest();
+    return this.http.post(`${this._API}articles/${slug}/favorite`, null, headers).subscribe((data) => {
+      return;
+    });
+  }
+
+  unFavoriteBySlug(slug) {    
+    let headers = this._loginService.setTokenRequest();
+    return this.http.delete(`${this._API}articles/${slug}/favorite`, headers).subscribe((data) => {
+      return;
+    });
   }
 }

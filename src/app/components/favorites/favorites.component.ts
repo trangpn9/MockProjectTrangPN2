@@ -21,14 +21,15 @@ export class FavoritesComponent implements OnInit {
     this.activatedRoute.params.subscribe((data: any) => {
       const { username } = data;
       
-      this.articleService.getFavoritesArticleByUsername(username).subscribe((data: Articles) => {        
+      this.articleService.getFavoritesArticleByUsername(username).subscribe((data: Articles) => {                       
         const { articles, articlesCount } = data;
-        this.articles = articles;
-        this.totalArticles = articlesCount;
-    
-        this.totalPage = Math.ceil(articlesCount / articles.length);
-        this.numbers = Array(this.totalPage).fill(0).map((x, i) => i);
-        
+        if (articles.length > 0) {                    
+          this.articles = articles;
+          this.totalArticles = articlesCount;
+      
+          this.totalPage = Math.ceil(articlesCount / articles.length);
+          this.numbers = Array(this.totalPage).fill(0).map((x, i) => i);          
+        }        
       });
     });
   }
@@ -37,7 +38,7 @@ export class FavoritesComponent implements OnInit {
     event.preventDefault();    
     this.currPage = number;
 
-    this.articleService.getArticlesByOffset(number).subscribe((data: Articles) => {
+    this.articleService.getArticlesByOffset(number).subscribe((data: Articles) => {          
       const { articles } = data;
       this.articles = articles;
     });

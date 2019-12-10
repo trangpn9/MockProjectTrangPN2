@@ -1,0 +1,11 @@
+<form class="card comment-form" [formGroup]="commentFormGroup" novalidate>
+    <div class="card-block">
+        <textarea class="form-control" formControlName="content" placeholder="Write a comment..." rows="3"></textarea>
+    </div>
+    <div class="card-footer">
+        <img [src]="image" class="comment-author-img" />        
+        <button class="btn btn-sm btn-primary" (click)="postComment()" type="button" [disabled]="commentFormGroup.invalid">
+            Post Comment
+        </button>
+    </div>
+</form>

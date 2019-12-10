@@ -2,10 +2,11 @@
     <div class="article-meta">
         <a href (click)="setProrileUser($event, '@'+article.author.username)"><img [src]="article.author.image" /></a>
         <div class="info">
-            <a href (click)="setProrileUser($event, '@'+article.author.username)" class="author">{{article.author.username}}</a>
+            <a href (click)="setProrileUser($event, '@'+article.author.username)"
+                class="author">{{article.author.username}}</a>
             <span class="date">{{article.createdAt | date:'MMMM dd, yyyy'}}</span>
         </div>
-        <button class="btn btn-outline-primary btn-sm pull-xs-right">
+        <button class="btn btn-outline-primary btn-sm pull-xs-right" type="button" (click)="onFavorite()">
             <i class="ion-heart"></i> {{article.favoritesCount}}
         </button>
     </div>
@@ -13,5 +14,10 @@
         <h1>{{article.title}}</h1>
         <p>{{article.description}}</p>
         <span>Read more...</span>
+        <ul class="tag-list" *ngIf="article.tagList.length > 0">
+            <li class="tag-default tag-pill tag-outline" *ngFor="let item of article.tagList">
+                {{item}}
+            </li>
+        </ul>
     </a>
 </div>

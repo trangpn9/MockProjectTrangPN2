@@ -19,7 +19,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/', 'profile', '@'+currentUser]" routerLinkActive="active">
+            <a class="nav-link" href (click)="goSetting($event)" routerLinkActive="active">
               <img *ngIf="currentImage != ''" class="user-pic" [src]="currentImage"/>
               {{currentUser}}
             </a>

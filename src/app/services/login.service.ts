@@ -50,14 +50,15 @@ export class LoginService {
     return this._isLoggedIn.next(true);
   }
 
-  setTokenRequest() {
-    let currentToken = localStorage.getItem('jwtToken')
+  setTokenRequest() {    
+    let currentToken = localStorage.getItem('jwtToken');    
     let _httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
         'Authorization': `Token ${currentToken}`
       })
     };
+    
     return _httpOptions;
   }
 

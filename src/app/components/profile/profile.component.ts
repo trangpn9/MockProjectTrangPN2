@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService, ProfileUser } from 'src/app/services/profile.service';
 import { LoginService, User } from 'src/app/services/login.service';
 import { Title, Meta } from '@angular/platform-browser';
@@ -12,13 +12,15 @@ import { Title, Meta } from '@angular/platform-browser';
 export class ProfileComponent implements OnInit {
 
   profileUser: ProfileUser;
-  isFollow: boolean = false;
+  following: boolean = false;
+  username: string = '';
   myProfile: boolean = false;
   currListArticle: string = 'myArticle';
 
   constructor(
     private _profileService: ProfileService,
     private activatedRoute: ActivatedRoute,
+    private router: Router,
     private _loginService: LoginService,
     private title: Title, private meta: Meta
   ) { }
@@ -26,6 +28,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     let userLogin: string = '';
     let currentUser: string = '';
+    let checkURL = this.router.url.includes('favorites');                
 
     currentUser = this.activatedRoute.firstChild.snapshot.params['username'];
 
@@ -35,9 +38,15 @@ export class ProfileComponent implements OnInit {
     this._profileService.setCurrentProfile(currentUser);
 
     this._profileService.getCurrentProfile().subscribe((data: ProfileUser) => {
-      this.profileUser = data;      
-      this.currListArticle = 'myArticle';
-      
+      this.profileUser = data;
+      this.username = this.profileUser.username;
+      this.following = this.profileUser.following;    
+      if (checkURL == true) {
+        this.currListArticle = 'favorArticle';
+      } else {
+        this.currListArticle = 'myArticle';
+      }      
+            
       this.title.setTitle(`@${this.profileUser.username} | Conduit`);
       this.meta.updateTag({
         name: 'description',
@@ -50,11 +59,10 @@ export class ProfileComponent implements OnInit {
         this.myProfile = false;
       }
       
-    });
+    });    
   }
 
   changeListArticle(listArticle) {
     return this.currListArticle = listArticle;
   }
-
 }
