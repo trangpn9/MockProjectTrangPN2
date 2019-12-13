@@ -24,9 +24,14 @@ export class HeaderComponent implements OnInit {
       this.isLogin = data;      
     });
 
-    this._loginService.getCurrentUser().subscribe((data) => {             
+    this._loginService.getCurrentUser().subscribe((data) => {                        
       this.currentUser = data['username'];
-      this.currentImage = data['image'];
+      if (data['image'] != null) {
+        this.currentImage = data['image'];
+      } else {
+        this.currentImage = '';
+      }
+      
     });
   }
 

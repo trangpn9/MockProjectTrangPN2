@@ -15,7 +15,12 @@ export class LoginFormComponent implements OnInit {
   loginErr;
   loginFormGroup: FormGroup;
 
-  constructor(private route: ActivatedRoute, private fb: FormBuilder, private _loginSevice: LoginService, private router: Router) {
+  constructor(
+    private route: ActivatedRoute, 
+    private fb: FormBuilder, 
+    private _loginSevice: LoginService, 
+    private router: Router
+  ) {
     this.loginFormGroup = fb.group({
       userName: ['', Validators.required],
       email: ['', [Validators.required, Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
@@ -58,8 +63,23 @@ export class LoginFormComponent implements OnInit {
     });    
   }
 
-  register() {
-
+  register() {    
+    let userInfo = {
+      "user":{
+        "username": this.loginFormGroup.value['userName'],
+        "email": this.loginFormGroup.value['email'],
+        "password": this.loginFormGroup.value['password']
+      }
+    }
+    
+    this._loginSevice.signUp(userInfo).subscribe((data:any) => {
+      const { user } = data;
+      localStorage.setItem('jwtToken', user.token);      
+      this._loginSevice.setCheckLogin();
+      this.router.navigate(['/']);
+    }, (err) => {      
+      this.loginErr = err.error.errors;
+    });
   }
 
 }

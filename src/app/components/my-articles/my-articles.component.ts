@@ -15,6 +15,7 @@ export class MyArticlesComponent implements OnInit {
   totalPage: number = 0;
   numbers: number[] = [];
   currPage: number = 0;
+  hasArticle: boolean = true;
 
   constructor(private activatedRoute: ActivatedRoute, private articleService: ArticleService, private _profileService: ProfileService) { }
 
@@ -23,12 +24,17 @@ export class MyArticlesComponent implements OnInit {
       const { username } = data;      
 
       this.articleService.getListArticleByUsername(username).subscribe((data: Articles) => {        
-        const { articles, articlesCount } = data;
-        this.articles = articles;
-        this.totalArticles = articlesCount;
-    
-        this.totalPage = Math.ceil(articlesCount / articles.length);
-        this.numbers = Array(this.totalPage).fill(0).map((x, i) => i);
+        const { articles, articlesCount } = data;        
+        if (articlesCount > 0) {
+          this.hasArticle = true;
+          this.articles = articles;
+          this.totalArticles = articlesCount;
+      
+          this.totalPage = Math.ceil(articlesCount / articles.length);
+          this.numbers = Array(this.totalPage).fill(0).map((x, i) => i);
+        } else {
+          this.hasArticle = false;
+        }
         
       });
     });        

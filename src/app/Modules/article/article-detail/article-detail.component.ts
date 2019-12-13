@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ArticleService, Article } from '../article.service';
 import { Title, Meta } from '@angular/platform-browser';
-import { LoginService } from 'src/app/services/login.service';
+import { LoginService, User } from 'src/app/services/login.service';
+import { error } from 'util';
 
 @Component({
   selector: 'app-article-detail',
@@ -36,11 +37,13 @@ export class ArticleDetailComponent implements OnInit {
   slug: string = '';
   isLogin: boolean = false;
   image: string;
+  isEditor: boolean = false;
 
   constructor(
     private activatedRoute: ActivatedRoute, 
     private articleService: ArticleService,
     private _loginService: LoginService,
+    private router: Router,
     private title: Title, private meta: Meta
   ) { }
 
@@ -63,6 +66,17 @@ export class ArticleDetailComponent implements OnInit {
             name: 'description',
             content: `Conduit : Conduit ${this.currentArticle.description}`
           });
+          
+          this._loginService.getCurrentUser().subscribe((data: User) => {            
+            if(this.currentArticle.author.username == data.username) {
+              return this.isEditor = true;
+            }        
+
+            return this.isEditor = false;
+          })
+        }, (error) => {          
+          alert("Article not exist!");           
+          this.router.navigate(['/']);
         });
       }
 

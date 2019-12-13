@@ -20,7 +20,9 @@ const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginFormComponent },
   { path: 'register', component: LoginFormComponent },
-  { path: 'editor', component: EditorComponent, canActivate: [AuthGuard] },
+  { path: 'editor', component: EditorComponent, canActivate: [AuthGuard], children: [
+    { path: ':slug', component: EditorComponent, canActivate: [AuthGuard] },
+  ] },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
   {
     path: 'profile', component: ProfileComponent, children: [
@@ -46,7 +48,7 @@ const routes: Routes = [
     SettingsComponent,
     ProfileComponent,
     FavoritesComponent,
-    MyArticlesComponent,
+    MyArticlesComponent,    
   ],
   imports: [
     CommonModule,

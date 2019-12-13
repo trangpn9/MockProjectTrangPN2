@@ -79,4 +79,14 @@ export class LoginService {
     this._isLoggedIn.next(false);
   }
 
+  updateProfile(body) {
+    let headers = this.setTokenRequest();    
+    
+    return this.http.put(`${this._API}user`, body, headers);
+  }
+
+  signUp(user) {
+    return this.http.post(`${this._API}users`, user);
+  }
+
 }

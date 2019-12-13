@@ -1,0 +1,7 @@
+.progress {
+    height: 5px !important;
+    margin-bottom: 0 !important;
+}
+.progress-bar {
+    height: 5px;
+}

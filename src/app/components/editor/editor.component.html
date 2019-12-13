@@ -3,24 +3,39 @@
         <div class="row">
 
             <div class="col-md-10 offset-md-1 col-xs-12">
-                <form>
+                <form [formGroup]="articleFormGroup" novalidate>
                     <fieldset>
                         <fieldset class="form-group">
-                            <input type="text" class="form-control form-control-lg" placeholder="Article Title">
+                            <input type="text" class="form-control form-control-lg" formControlName="titleArticle"
+                                placeholder="Article Title">
                         </fieldset>
                         <fieldset class="form-group">
-                            <input type="text" class="form-control" placeholder="What's this article about?">
+                            <input type="text" class="form-control" formControlName="desArticle"
+                                placeholder="What's this article about?">
                         </fieldset>
                         <fieldset class="form-group">
-                            <textarea class="form-control" rows="8"
+                            <textarea class="form-control" rows="8" formControlName="contentArticle"
                                 placeholder="Write your article (in markdown)"></textarea>
                         </fieldset>
                         <fieldset class="form-group">
-                            <input type="text" class="form-control" placeholder="Enter tags">
-                            <div class="tag-list"></div>
+                            <input type="text" class="form-control" placeholder="Enter tags" formControlName="tagList"
+                                (keyup.enter)="onEnterTag()">
+                            <div class="tag-list">
+                                <span class="tag-default tag-pill" *ngFor="let item of tagLists; let i = index">
+                                    <i class="ion-close-round" (click)="removeTag(i)"></i>
+                                    {{item}}
+                                </span>
+                            </div>
                         </fieldset>
-                        <button class="btn btn-lg pull-xs-right btn-primary" type="button">
+                        <button class="btn btn-lg pull-xs-right btn-primary" type="button"
+                            *ngIf="!isEditor"
+                            [disabled]="articleFormGroup.invalid" (click)="createArticle()">
                             Publish Article
+                        </button>
+                        <button class="btn btn-lg pull-xs-right btn-primary" type="button"
+                            *ngIf="isEditor"
+                            [disabled]="articleFormGroup.invalid" (click)="updateArticle()">
+                            Update Article
                         </button>
                     </fieldset>
                 </form>

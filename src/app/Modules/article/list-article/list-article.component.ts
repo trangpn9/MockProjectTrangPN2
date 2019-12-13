@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ArticleService, Article, Articles } from '../article.service';
-import { ScrollAutoService } from 'src/app/services/scroll-auto.service';
 
 @Component({
   selector: 'app-list-article',
@@ -18,11 +17,18 @@ export class ListArticleComponent implements OnInit {
   currentTag: string = '';
   currPage: number = 0;
   feedToggle: string = 'globalFeed';
+  notFeed: boolean = false;
 
   constructor(private articleService: ArticleService) { }
 
-  ngOnInit() {   
-    this.getGlobalArticle();
+  ngOnInit() {
+    if(this.isLogin) {
+      this.feedToggle = 'yourFeed'
+      this.getYourFeed();
+    } else {
+      this.feedToggle = 'globalFeed';
+      this.getGlobalArticle();
+    }
 
     this.articleService.getAllTags().subscribe((data: any) => {
       const { tags } = data;
@@ -63,8 +69,21 @@ export class ListArticleComponent implements OnInit {
   }
 
   getGlobalArticle() {
+    this.notFeed = false;
     this.articleService.getAllArticles().subscribe((data: Articles) => {
       this.handlePagination(data);
+    });
+  }
+
+  getYourFeed() {
+    this.articleService.getArticleFeed().subscribe((data: Articles) => {      
+      if (data['articles']['length'] > 0) {
+        this.notFeed = false;
+        this.handlePagination(data);
+      } else {
+        this.notFeed = true;
+      }
+      
     });
   }
 

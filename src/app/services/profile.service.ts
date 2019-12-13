@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { LoginService } from './login.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
 
 export interface ProfileUser {
   username: string;
@@ -23,7 +24,7 @@ export class ProfileService {
     following: false,
   });
 
-  constructor(private _loginService: LoginService, private http: HttpClient) {
+  constructor(private _loginService: LoginService, private http: HttpClient, private router: Router) {
     this._API = this._loginService.getAPI();
   }
 
@@ -34,12 +35,20 @@ export class ProfileService {
     if (isLogin != true) {
       return this.http.get(`${this._API}profiles/${name}`).subscribe((data: any) => {                      
         this._currentProfile.next(data.profile);      
+      }, (err) => {
+        console.log("Error: ", err);
+        alert("User not exist!");
+        this.router.navigate(['/']);
       });
     }
     
     let headers = this._loginService.setTokenRequest();
     return this.http.get(`${this._API}profiles/${name}`, headers).subscribe((data: any) => {                      
       this._currentProfile.next(data.profile);      
+    }, (err) => {
+      console.log("Error: ", err);
+      alert("User not exist!");
+      this.router.navigate(['/']);
     });
   }
 

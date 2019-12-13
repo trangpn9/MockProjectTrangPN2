@@ -34,7 +34,7 @@ export class ArticleService {
 
   private _API: string = '';
   private _cacheRequest: string = '';
-  private _offset: number = 10;  
+  private _offset: number = 10;
 
   constructor(private _loginService: LoginService, private http: HttpClient) {
     this._API = this._loginService.getAPI();
@@ -52,9 +52,16 @@ export class ArticleService {
     if (isLogin) {
       let headers = this._loginService.setTokenRequest();
       return this.http.get(`${this._API}articles?limit=10`, headers);
-    }    
+    }
 
     return this.http.get(`${this._API}articles?limit=10`);
+  }
+
+  getArticleFeed() {
+    this._cacheRequest = `${this._API}articles/feed?limit=10`;
+    this._offset = 10;
+    let headers = this._loginService.setTokenRequest();
+    return this.http.get(`${this._API}articles/feed?limit=10`, headers)
   }
 
   getArticlesByTag(tag) {
@@ -91,11 +98,11 @@ export class ArticleService {
   }
 
   getArticleBySlug(slug) {
-    let isLogin = this._loginService.checkLogin().value;    
+    let isLogin = this._loginService.checkLogin().value;
     this._cacheRequest = `${this._API}articles/${slug}`;
     if (isLogin) {
       let headers = this._loginService.setTokenRequest();
-      return this.http.get(`${this._API}articles/${slug}`, headers);  
+      return this.http.get(`${this._API}articles/${slug}`, headers);
     }
 
     return this.http.get(`${this._API}articles/${slug}`);
@@ -105,17 +112,32 @@ export class ArticleService {
     return this.http.get(`${this._cacheRequest}/comments`);
   }
 
-  favoriteBySlug(slug) {            
+  favoriteBySlug(slug) {
     let headers = this._loginService.setTokenRequest();
     return this.http.post(`${this._API}articles/${slug}/favorite`, null, headers).subscribe((data) => {
       return;
     });
   }
 
-  unFavoriteBySlug(slug) {    
+  unFavoriteBySlug(slug) {
     let headers = this._loginService.setTokenRequest();
     return this.http.delete(`${this._API}articles/${slug}/favorite`, headers).subscribe((data) => {
       return;
     });
+  }
+
+  deleteArticleBySlug(slug) {
+    let headers = this._loginService.setTokenRequest();
+    return this.http.delete(`${this._API}articles/${slug}`, headers);
+  }
+
+  createArticle(article) {
+    let headers = this._loginService.setTokenRequest();
+    return this.http.post(`${this._API}articles/`, article, headers);
+  }
+
+  updateArticleBySlug(slug, article) {
+    let headers = this._loginService.setTokenRequest();
+    return this.http.put(`${this._API}articles/${slug}`, article, headers);
   }
 }

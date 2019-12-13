@@ -2,6 +2,8 @@
     <app-article-preview [article]="article"></app-article-preview>
 </ng-container>
 
+<h3 *ngIf="!hasArticle">User have not article!</h3>
+
 <div *ngIf="totalPage > 1">
     <nav>
         <ul class="pagination">

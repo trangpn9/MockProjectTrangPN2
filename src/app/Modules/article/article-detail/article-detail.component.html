@@ -14,11 +14,16 @@
                     <span class="date">{{currentArticle.createdAt | date:'MMMM dd, yyyy'}}</span>
                 </div>
 
-                <app-follow-user (click)="onFollow()" [username]="username" [following]="following"></app-follow-user>
-                &nbsp;&nbsp;
+                <ng-container *ngIf="!isEditor">
+                    <app-follow-user (click)="onFollow()" [username]="username" [following]="following"></app-follow-user>
+                    &nbsp;&nbsp;
+                    <app-favorite-post (click)="onFavorite()" [slug]="slug" [favoritesCount]="favoritesCount"
+                        [favorited]="favorited"></app-favorite-post>
+                </ng-container>
 
-                <app-favorite-post (click)="onFavorite()" [slug]="slug" [favoritesCount]="favoritesCount"
-                    [favorited]="favorited"></app-favorite-post>
+                <ng-container *ngIf="isEditor">
+                    <app-button-editor [slug]="slug"></app-button-editor>
+                </ng-container>                
             </div>
 
         </div>
@@ -28,9 +33,7 @@
 
         <div class="row article-content">
             <div class="col-md-12">
-                <div>
-                    {{currentArticle.body}}
-                </div>
+                <div [innerHTML]="currentArticle.body | marked"></div>
 
                 <ul class="tag-list" *ngIf="currentArticle.tagList.length > 0">
                     <li class="tag-default tag-pill tag-outline" *ngFor="let item of currentArticle.tagList">
@@ -51,12 +54,16 @@
                         class="author">{{currentArticle.author.username}}</a>
                     <span class="date">{{currentArticle.createdAt | date:'MMMM dd, yyyy'}}</span>
                 </div>
+                <ng-container *ngIf="!isEditor">
+                    <app-follow-user (click)="onFollow()" [username]="username" [following]="following"></app-follow-user>
+                    &nbsp;&nbsp;
 
-                <app-follow-user (click)="onFollow()" [username]="username" [following]="following"></app-follow-user>
-                &nbsp;&nbsp;
-
-                <app-favorite-post (click)="onFavorite()" [slug]="slug" [favoritesCount]="favoritesCount"
-                    [favorited]="favorited"></app-favorite-post>
+                    <app-favorite-post (click)="onFavorite()" [slug]="slug" [favoritesCount]="favoritesCount"
+                        [favorited]="favorited"></app-favorite-post>
+                </ng-container>
+                <ng-container *ngIf="isEditor">
+                    <app-button-editor [slug]="slug"></app-button-editor>
+                </ng-container>
             </div>
         </div>
 

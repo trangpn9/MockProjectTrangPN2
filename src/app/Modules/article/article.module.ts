@@ -9,15 +9,19 @@ import { ArticleDetailComponent } from './article-detail/article-detail.componen
 import { FavoritePostComponent } from './favorite-post/favorite-post.component';
 import { FollowUserComponent } from 'src/app/components/follow-user/follow-user.component';
 import { CommentModule } from '../comment/comment.module';
+import { ButtonEditorComponent } from 'src/app/components/button-editor/button-editor.component';
+import { MarkedPipe } from 'src/app/pipes/marked.pipe';
 
 
 @NgModule({
   declarations: [
+    MarkedPipe,
     ListArticleComponent,
     ArticlePreviewComponent,
     ArticleDetailComponent,
     FavoritePostComponent,
     FollowUserComponent,
+    ButtonEditorComponent,    
   ],
   imports: [
     CommonModule,
@@ -32,6 +36,7 @@ import { CommentModule } from '../comment/comment.module';
     ArticleDetailComponent,
     FavoritePostComponent,
     FollowUserComponent,
+    ButtonEditorComponent,
   ]
 })
 export class ArticleModule { }

@@ -15,9 +15,12 @@
             </ul>
         </div>
 
+        
         <ng-container *ngFor="let article of articles">
             <app-article-preview [article]="article"></app-article-preview>
-        </ng-container>
+        </ng-container>        
+        
+        <h3 *ngIf="notFeed">User have not feed!</h3>
 
         <div *ngIf="totalPage > 1">
             <nav>

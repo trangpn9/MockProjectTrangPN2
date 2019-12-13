@@ -14,6 +14,7 @@ export class FavoritesComponent implements OnInit {
   totalPage: number = 0;
   numbers: number[] = [];
   currPage: number = 0;
+  hasFavorites:boolean = true;
 
   constructor(private activatedRoute: ActivatedRoute, private articleService: ArticleService) { }
 
@@ -23,13 +24,16 @@ export class FavoritesComponent implements OnInit {
       
       this.articleService.getFavoritesArticleByUsername(username).subscribe((data: Articles) => {                       
         const { articles, articlesCount } = data;
-        if (articles.length > 0) {                    
+        if (articles.length > 0) {    
+          this.hasFavorites = true;                
           this.articles = articles;
           this.totalArticles = articlesCount;
       
           this.totalPage = Math.ceil(articlesCount / articles.length);
           this.numbers = Array(this.totalPage).fill(0).map((x, i) => i);          
-        }        
+        } else {
+          this.hasFavorites = false;
+        }
       });
     });
   }

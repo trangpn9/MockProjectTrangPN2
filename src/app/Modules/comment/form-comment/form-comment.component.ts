@@ -29,8 +29,12 @@ export class FormCommentComponent implements OnInit {
 
   ngOnInit() {
     this._loginService.getCurrentUser().subscribe((data: User) => {
-      const { image } = data;
-      this.image = image;
+      const { image } = data;      
+      if (image == null) {
+        this.image = 'https://static.productionready.io/images/smiley-cyrus.jpg'
+      } else {
+        this.image = image;
+      }      
     });
   }
 
