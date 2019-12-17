@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LoginService } from 'src/app/services/login.service';
 import { Title, Meta } from '@angular/platform-browser';
 
@@ -7,9 +7,7 @@ import { Title, Meta } from '@angular/platform-browser';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
-
-  @Input('isLogin') isL: boolean;
+export class HomeComponent implements OnInit { 
   
   isLogin: boolean = false;  
 

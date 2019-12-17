@@ -73,6 +73,12 @@ export class ArticleService {
 
   getArticlesByOffset(page) {
     let num = parseInt(page, 10) * this._offset;
+    let isLogin = this._loginService.checkLogin().value;
+
+    if (isLogin) {
+      let headers = this._loginService.setTokenRequest();
+      return this.http.get(`${this._cacheRequest}&offset=${num}`, headers);
+    }
 
     return this.http.get(`${this._cacheRequest}&offset=${num}`);
   }

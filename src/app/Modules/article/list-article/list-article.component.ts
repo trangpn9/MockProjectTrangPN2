@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ArticleService, Article, Articles } from '../article.service';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-list-article',
@@ -19,13 +20,13 @@ export class ListArticleComponent implements OnInit {
   feedToggle: string = 'globalFeed';
   notFeed: boolean = false;
 
-  constructor(private articleService: ArticleService) { }
+  constructor(private articleService: ArticleService, private _loginService: LoginService) { }
 
-  ngOnInit() {
-    if(this.isLogin) {
+  ngOnInit() {        
+    if(this.isLogin) {      
       this.feedToggle = 'yourFeed'
       this.getYourFeed();
-    } else {
+    } else {            
       this.feedToggle = 'globalFeed';
       this.getGlobalArticle();
     }
@@ -59,7 +60,7 @@ export class ListArticleComponent implements OnInit {
     }    
   }
 
-  handlePagination(data: Articles) {
+  handlePagination = (data: Articles) => {
     const { articles, articlesCount } = data;
     this.articles = articles;
     this.totalArticles = articlesCount;
@@ -68,7 +69,7 @@ export class ListArticleComponent implements OnInit {
     this.numbers = Array(this.totalPage).fill(0).map((x, i) => i);
   }
 
-  getGlobalArticle() {
+  getGlobalArticle = () => {
     this.notFeed = false;
     this.articleService.getAllArticles().subscribe((data: Articles) => {
       this.handlePagination(data);
